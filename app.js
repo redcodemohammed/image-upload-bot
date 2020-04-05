@@ -11,14 +11,17 @@ const port = process.env.PORT;
 const bot = new telegraf(botToken);
 
 bot.start(ctx => {
-    ctx.reply("Hello");
+    ctx.reply(`مرحبا, عن ارسال صورة تأكد من ارسالها كملف لكي لا تقل دقتها`);
 });
 
-bot.on("photo", async ctx => {
+bot.on("document", async ctx => {
+    if (!(/\.(gif|jpe?g|tiff|png|webp|bmp)$/i).test(ctx.message.document.file_name)) {
+        ctx.reply(`الرجاء ارسال صورة`);
+    }
     //get uploader info:
     let name = `${ctx.message.from.first_name}${ctx.message.from.last_name || ""}`
     //get the link:
-    let link = await ctx.telegram.getFileLink(ctx.message.photo[0].file_id);
+    let link = await ctx.telegram.getFileLink(ctx.message.document.file_id);
 
     //upload:
     let api = `${api_home}?key=${api_key}&name=${name}&image=${link}`;
@@ -32,6 +35,8 @@ bot.on("photo", async ctx => {
     }
 
 });
-
+bot.on("photo", ctx => {
+    ctx.reply(`ارسل الصورة كملف لكي لا يتم ضغطها`);
+});
 bot.launch();
 server.listen(port);
