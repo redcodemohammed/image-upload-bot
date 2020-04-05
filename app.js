@@ -11,7 +11,7 @@ const port = process.env.PORT;
 const bot = new telegraf(botToken);
 
 bot.start(ctx => {
-    ctx.reply(`مرحبا, عن ارسال صورة تأكد من ارسالها كملف لكي لا تقل دقتها`);
+    ctx.reply(`مرحبا, عند ارسال صورة تأكد من ارسالها كملف لكي لا تقل دقتها`);
 });
 
 bot.on("document", async ctx => {
