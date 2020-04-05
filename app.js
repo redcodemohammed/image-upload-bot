@@ -16,7 +16,7 @@ bot.start(ctx => {
 
 bot.on("document", async ctx => {
     if (!(/\.(gif|jpe?g|tiff|png|webp|bmp)$/i).test(ctx.message.document.file_name)) {
-        ctx.reply(`الرجاء ارسال صورة`);
+        return ctx.reply(`الرجاء ارسال صورة`);
     }
     //get uploader info:
     let name = `${ctx.message.from.first_name}${ctx.message.from.last_name || ""}`
