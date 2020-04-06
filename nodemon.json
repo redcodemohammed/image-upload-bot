@@ -1,0 +1,8 @@
+{
+    "env": {
+        "token": "851004617:AAEzEV_QuJEOsFbuR3QCdv8C9I8nHuXza9c",
+        "PORT": "3000",
+        "apiKey": "8b9829fa45abad3ccbf76d25ab2b3af3",
+        "api": "https://api.imgbb.com/1/upload"
+    }
+}
