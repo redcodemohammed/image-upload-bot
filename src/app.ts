@@ -9,35 +9,25 @@ const port = process.env.PORT;
 
 const bot = new telegraf(botToken);
 
+import startReply from "./replies/start";
+import helpReply from "./replies/help";
+
+import upload from "./commands/upload";
+
 bot.start(ctx => {
-    ctx.reply(`مرحبا, عند ارسال صورة تأكد من ارسالها كملف لكي لا تقل دقتها`);
+    let name = ctx.message.from.first_name.concat(` ${ctx.message.from.last_name || ""}`);
+    ctx.reply(startReply(name));
 });
 
+bot.help(helpReply);
 
-bot.on("document", async ctx => {
-    if (!(/\.(gif|jpe?g|tiff|png|webp|bmp)$/i).test(ctx.message.document.file_name)) {
-        return ctx.reply(`الرجاء ارسال صورة`);
-    }
-    //get uploader info:
-    let name = `${ctx.message.from.first_name}${ctx.message.from.last_name || ""}`
-    //get the link:
-    let link = await ctx.telegram.getFileLink(ctx.message.document.file_id);
 
-    //upload:
-    let api = `${api_home}?key=${api_key}&name=${name}&image=${link}`;
-    try {
+bot.on("document", upload(api_home, api_key));
 
-        let upload = await axios.get(api);
-        let imageLink = upload.data.data.image.url;
-        ctx.reply(`تم رفع الصورة على الرابط ${imageLink}.`);
-    } catch (err) {
-        ctx.reply(err);
-    }
-
-});
 bot.on("photo", ctx => {
     ctx.reply(`ارسل الصورة كملف لكي لا يتم ضغطها`);
 });
+
 bot.launch();
 
 const server = http.createServer((req, res) => res.end("Bot is running, enjoy!"));
